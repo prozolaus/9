@@ -67,11 +67,12 @@ namespace Chrono
             return false;
         return true;
     }
-
+    
+    // a leap year is disivible by 4, but not by 100, except if it is divisible by 400
     bool leapyear(int y)
     {
-        //...
-        return true;
+        if (y < 0) error("leapyear(): The year cannot be negative.");
+        return y%4==0 && y%100!=0 || y%400==0;
     }
 
     bool operator==(const Date &a, const Date &b)
