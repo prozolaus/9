@@ -40,19 +40,13 @@ void Library::give_book_to_patron(Book &b, const Patron &p)
 
     for (int i = 0; i < books.size(); i++)
         if (b == books[i])
-        {
             is_book_exist = true;
-            break; // no need to look any further
-        }
     if (!is_book_exist)
         error("give_book_to_patron(): such book doesn't exist!");
 
     for (int i = 0; i < patrons.size(); i++)
         if (p == patrons[i])
-        {
             is_patron_exist = true;
-            break; // no need to look any further
-        }
     if (!is_patron_exist)
         error("give_book_to_patron(): such patron doesn't exist!");
 
@@ -97,7 +91,7 @@ void Library::add_patron(const Patron &p)
 
 int main()
 {
-    
+    /*
     Book book1{"978-5-6040724-G", "Programming", "Bjarne Stroustrup", Book::Genre::periodicals, Date(2019, Month::apr, 11)};
     Patron user1{"Patrick", 1001, 100};
     Library lib;
@@ -108,5 +102,12 @@ int main()
     vector<string> debtor_names = lib.get_debtor_names();
     for (int i = 0; i < debtor_names.size(); i++)
         cout << debtor_names[i] << endl;
-    
+    */
+   /*
+   Date date;
+   Day day = Day::saturday;
+   cout << (int)date.next_workday(day) << endl;
+   */
+    Date date(2021, Month::apr, 25);
+    cout << date.week_of_year() << endl;
 }

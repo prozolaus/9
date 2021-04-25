@@ -52,11 +52,11 @@ namespace Libra
             }
             for (int i = pos1; i < pos2; i++)
             {
-                if (isbn[i] < '0' || isbn[i] > '9')
+                if (isbn[i] < '0' || isbn[i] > '9')  //isdigit()
                 {
                     if (sec < sectors - 1) //for first three sectors
                         error("Wrong ISBN (sector 1-3 must contain only integers)");
-                    else if ((isbn[i] < 'A' || isbn[i] > 'Z') && (isbn[i] < 'a' || isbn[i] > 'z')) //for fourth sector
+                    else if ((isbn[i] < 'A' || isbn[i] > 'Z') && (isbn[i] < 'a' || isbn[i] > 'z')) //for fourth sector //isalpha()
                         error("Wrong ISBN (sector 4 must contain an integer or a letter)");
                 }
             }

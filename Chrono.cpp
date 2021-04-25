@@ -108,16 +108,28 @@ namespace Chrono
         return is;
     }
 
-    enum class Day
+    Day Date::next_workday(const Day &d)
     {
-        sunday,
-        monday,
-        tuesday,
-        wednesday,
-        thursday,
-        friday,
-        saturday
-    };
+        int i = (int)d + 1;
+        return (d >= Day::sunday && d <= Day::thursday) ? Day(i): Day::monday;
+    }
+
+    vector<int> Date::get_days_in_month()
+    {
+        days_in_month = {31,28,31,30,31,30,31,31,30,31,30}; //from january to november
+        if (leapyear(y)) days_in_month[1] = 29;
+        return days_in_month;
+    }
+
+    int Date::week_of_year()
+    {
+        vector<int> v = get_days_in_month();
+        int sum = d, rem = 0;   //sum - number of days since January 1
+        for (int i = 0, n = (int)m - 1; i < n; i++)
+            sum += v[i];
+        rem = sum%7;
+        return (rem > 0) ? sum/7+1 : sum/7;
+    }
 
     Day day_of_week(const Date& d)
     {
