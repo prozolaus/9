@@ -87,6 +87,8 @@ namespace Chrono
     // secondary functions:
     bool is_date(int y, Month m, int d)
     {
+        //if (y < zero.year())
+            //return false;
         if (d <= 0)
             return false; // d must be positive
         if (m < Month::jan || m > Month::dec)

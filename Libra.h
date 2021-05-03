@@ -56,4 +56,26 @@ namespace Libra
     bool operator==(const Book &b1, const Book &b2);
     bool operator!=(const Book &b1, const Book &b2);
     ostream &operator<<(ostream &os, const Book b);
+
+    class Library
+    {
+    public:
+        //modifying functions
+        void add_book(const Book &b);
+        void add_patron(const Patron &p);
+        void show_book_status(const Book &b);
+        void give_book_to_patron(Book &b, const Patron &p);
+        vector<string> get_debtor_names();
+
+    private:
+        struct Transaction
+        {
+            Book book;
+            Patron patron;
+            Date date;
+        };
+        vector<Book> books;
+        vector<Patron> patrons;
+        vector<Transaction> transactions;
+    };
 }

@@ -80,4 +80,70 @@ namespace Libra
                   << b.get_author_name() << endl
                   << b.get_isbn() << endl;
     }
+
+    
+    vector<string> Library::get_debtor_names()
+    {
+        vector<string> v;
+        for (int i = 0; i < patrons.size(); i++)
+            if (!patrons[i].is_fee_paid())
+                v.push_back(patrons[i].get_user_name());
+        return v;
+    }
+
+    void Library::give_book_to_patron(Book &b, const Patron &p)
+    {
+        bool is_book_exist = false;
+        bool is_patron_exist = false;
+
+        for (int i = 0; i < books.size(); i++)
+            if (b == books[i])
+                is_book_exist = true;
+        if (!is_book_exist)
+            error("give_book_to_patron(): such book doesn't exist!");
+
+        for (int i = 0; i < patrons.size(); i++)
+            if (p == patrons[i])
+                is_patron_exist = true;
+        if (!is_patron_exist)
+            error("give_book_to_patron(): such patron doesn't exist!");
+
+        if (!p.is_fee_paid())
+            error("give_book_to_patron(): the patron has a debt");
+
+        if (b.is_handed_out())
+            error("give_book_to_patron(): the book has already been handed out");
+
+        Transaction tr{b, p, Date()}; //create a transaction with default date
+        transactions.push_back(tr);
+
+        b.give_out_book();
+    }
+
+    void Library::show_book_status(const Book &b)
+    {
+        for (int i = 0; i < books.size(); i++)
+            if (b == books[i])
+            {
+                cout << b.state_of_book() << endl;
+                return;
+            }
+        error("show_book_status(): there is no such book in the library!");
+    }
+
+    void Library::add_book(const Book &b)
+    {
+        for (int i = 0; i < books.size(); i++)
+            if (b == books[i])
+                error("add_book(): this book is already exist in the library");
+        books.push_back(b);
+    }
+
+    void Library::add_patron(const Patron &p)
+    {
+        for (int i = 0; i < patrons.size(); i++)
+            if (p == patrons[i])
+                error("add_patron(): a patron with such a card number is already exist in the library base");
+        patrons.push_back(p);
+    }
 }
