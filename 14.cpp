@@ -6,6 +6,7 @@ public:
     Money();
     Money(string cur, double d);
     string get_currency() const { return currency; }
+    double get_money() const { return money; }
     int get_banknote() const { return banknote; }
     int get_coin() const { return coin; }
 
@@ -28,7 +29,13 @@ Money::Money()
 int Money::rounding_coins()
 {
     int temp = (money - banknote) * 1000;
-    return (temp%100 >= 5) ? temp/10 + 1 : temp/10;
+    if (temp >= 995 && temp <= 999)
+    {
+        banknote++;
+        money++;
+        return 0;
+    }
+    return (temp % 10 >= 5) ? temp / 10 + 1 : temp / 10;
 }
 
 Money::Money(string cur, double d)
@@ -42,7 +49,6 @@ istream &operator>>(istream &is, Money &m)
 {
     string currency;
     double d;
-    char ch1;
     is >> currency >> d;
     if (!is)
         return is;
@@ -55,10 +61,36 @@ ostream &operator<<(ostream &os, const Money &m)
     return os << m.get_currency() << " " << m.get_banknote() << "." << m.get_coin();
 }
 
+Money operator+(const Money &m1, const Money &m2)
+{
+    if (m1.get_currency() != m2.get_currency())
+        error("Different currencies");
+    return Money(m1.get_currency(), m1.get_money() + m2.get_money());
+}
+
+Money operator-(const Money &m1, const Money &m2)
+{
+    if (m1.get_currency() != m2.get_currency())
+        error("Different currencies");
+    return Money(m1.get_currency(), m1.get_money() - m2.get_money());
+}
+
+Money operator*(const Money &m1, int n)
+{
+    return Money(m1.get_currency(), m1.get_money() * n);
+}
+
+Money operator/(const Money &m1, int n)
+{
+    double tre = m1.get_money() / n;
+    return Money(m1.get_currency(), m1.get_money() / n);
+}
+
 int main()
 {
-    //Money m{"UAH", 100.91};
-    Money m;
-    cin >> m;
-    cout << m << endl;
+    Money m1{"UAH", 1.99};
+    Money m2{"UAH", 1.01};
+    cout << m1 / 2 << endl;
+    cout << m2 / 2 << endl;
+
 }
