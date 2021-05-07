@@ -29,12 +29,9 @@ Money::Money()
 int Money::rounding_coins()
 {
     int temp = (money - banknote) * 1000;
-    if (temp >= 995 && temp <= 999)
-    {
-        banknote++;
-        money++;
-        return 0;
-    }
+    int temp2 = (money - banknote) * 10000;
+    if (temp2 % 10 == 9)
+        temp++;
     return (temp % 10 >= 5) ? temp / 10 + 1 : temp / 10;
 }
 
@@ -43,6 +40,12 @@ Money::Money(string cur, double d)
 {
     banknote = (long)money;
     coin = rounding_coins();
+    if (coin == 100)
+    {
+        banknote++;
+        money = (int)money + 1;
+        coin = 0;
+    }
 }
 
 istream &operator>>(istream &is, Money &m)
@@ -58,7 +61,10 @@ istream &operator>>(istream &is, Money &m)
 
 ostream &operator<<(ostream &os, const Money &m)
 {
-    return os << m.get_currency() << " " << m.get_banknote() << "." << m.get_coin();
+    return os << m.get_currency() << " "
+              << m.get_banknote() << "."
+              << ((m.get_coin() < 10) ? "0" : "")
+              << m.get_coin();
 }
 
 Money operator+(const Money &m1, const Money &m2)
@@ -82,15 +88,13 @@ Money operator*(const Money &m1, int n)
 
 Money operator/(const Money &m1, int n)
 {
-    double tre = m1.get_money() / n;
     return Money(m1.get_currency(), m1.get_money() / n);
 }
 
 int main()
 {
     Money m1{"UAH", 1.99};
-    Money m2{"UAH", 1.01};
-    cout << m1 / 2 << endl;
-    cout << m2 / 2 << endl;
-
+    Money m2{"UAH", 2.01};
+    cout << m1 / 7 << endl;
+    cout << m2 / 7 << endl;
 }
